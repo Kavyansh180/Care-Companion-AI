@@ -1,0 +1,11 @@
+Patient: Mr. Ramesh, 72 yrs
+Diagnosis: Hypertension & Cardiovascular Health
+
+Rx:
+1. Tab Telmisartan 40 mg
+   1 tab, morning, 30 days
+   Take after breakfast
+
+2. Tab Amlodipine 5 mg
+   1 tab, night, 30 days
+   Take at bedtime

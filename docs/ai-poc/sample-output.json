@@ -1,0 +1,17 @@
+{
+  "patient": "Mr. Ramesh",
+  "medications": [
+    {
+      "name": "Telmisartan",
+      "dosage": "40 mg",
+      "timing": "Morning",
+      "duration_days": 30
+    },
+    {
+      "name": "Amlodipine",
+      "dosage": "5 mg",
+      "timing": "Night",
+      "duration_days": 30
+    }
+  ]
+}
