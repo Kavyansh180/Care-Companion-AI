@@ -2,16 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import { useAppState, ActiveReminder, ReminderHistoryItem, CaregiverAlert } from "@/context/AppContext";
-
-// Helper to convert 24h time to 12h AM/PM
-export const formatTime12h = (time24: string) => {
-  if (!time24) return "";
-  const [hourStr, minStr] = time24.split(":");
-  const hour = parseInt(hourStr);
-  const ampm = hour >= 12 ? "PM" : "AM";
-  const hour12 = hour % 12 === 0 ? 12 : hour % 12;
-  return `${hour12}:${minStr} ${ampm}`;
-};
+import { localDateString } from "@/lib/dates";
+import { formatTime12h } from "@/lib/format";
 
 const languageCodeMap: Record<string, string> = {
   english: "en-US",
@@ -25,6 +17,8 @@ const languageCodeMap: Record<string, string> = {
   spanish: "es-ES",
   french: "fr-FR",
 };
+
+export const SUPPORTED_LANGUAGES = ["English", "Hindi", "Tamil", "Telugu", "Kannada", "Malayalam", "Marathi", "Bengali", "Spanish", "French"] as const;
 
 export function getLanguageCode(language?: string): string {
   if (!language) return "en-US";
@@ -350,7 +344,7 @@ export default function ReminderEngine() {
 
     const timer = setInterval(() => {
       const now = new Date();
-      const todayStr = now.toISOString().split("T")[0];
+      const todayStr = localDateString(now);
       const currentHHMM = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
 
       medicines.forEach(med => {
@@ -439,7 +433,7 @@ export default function ReminderEngine() {
 
     const timer = setInterval(() => {
       const now = Date.now();
-      const todayStr = new Date().toISOString().split("T")[0];
+      const todayStr = localDateString();
       const currentHHMM = `${String(new Date().getHours()).padStart(2, "0")}:${String(new Date().getMinutes()).padStart(2, "0")}`;
 
       setActiveReminders(prev => {

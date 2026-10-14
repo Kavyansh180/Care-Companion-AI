@@ -2,53 +2,144 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Natural healthcare palette. Every text/background pair meets WCAG AA
+   (text >= 4.5:1, borders and focus >= 3:1). */
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  
-  --dark-bg-primary: #0B1220;
-  --dark-bg-secondary: #111827;
-  --dark-bg-card: #1E293B;
-  --dark-bg-elevated: #243447;
-  
-  --dark-text-primary: #F8FAFC;
-  --dark-text-secondary: #CBD5E1;
-  --dark-text-muted: #94A3B8;
+  --bg: #F8FAF8;            /* warm off-white page */
+  --surface: #FFFFFF;       /* cards, panels, dialogs */
+  --surface-muted: #F1F5F2; /* quiet panels, counters */
+  --fg: #24332F;            /* headings and key values (charcoal) */
+  --fg-muted: #65736D;      /* body and secondary text */
+  --border: #E1E9E4;        /* soft grey-green card borders */
+  --border-strong: #7D8C86; /* form controls (3.5:1 on white) */
+  --primary: #287D78;       /* muted healthcare teal */
+  --primary-hover: #1F6662;
+  --primary-fg: #FFFFFF;
+  --primary-soft: #DCECE4;  /* sage accent: selected nav, icon tiles, info */
+  --primary-text: #1F6662;  /* teal text, readable on white and on sage */
+  --focus: #287D78;
+  --danger: #B4423A;
+  --danger-hover: #963530;
+  --taken-fg: #2F6B45;
+  --taken-bg: #E6F2EA;
+  --taken-border: #A9CFB5;
+  --pending-fg: #8A5A12;
+  --pending-bg: #FBF1DE;
+  --pending-border: #E5C78F;
+  --missed-fg: #9B3B34;
+  --missed-bg: #F9E8E6;
+  --missed-border: #E3B1AB;
+}
+
+/* Optional dark mode (only when chosen with the toggle): warm charcoal, muted teal, no navy or cyan. */
+.dark {
+  --bg: #1C2422;
+  --surface: #232D2A;
+  --surface-muted: #2B3633;
+  --fg: #EEF2EF;
+  --fg-muted: #B7C3BD;
+  --border: #3A4743;
+  --border-strong: #6E7D77;
+  --primary: #7FBFB6;
+  --primary-hover: #96CCC4;
+  --primary-fg: #12302C;
+  --primary-soft: #2A3B37;
+  --primary-text: #9FD0C8;
+  --focus: #9FD0C8;
+  --danger: #B4423A;
+  --danger-hover: #963530;
+  --taken-fg: #A7D7B5;
+  --taken-bg: #22382B;
+  --taken-border: #4F7A5E;
+  --pending-fg: #E8C98A;
+  --pending-bg: #3A3122;
+  --pending-border: #8A6B32;
+  --missed-fg: #E6A8A1;
+  --missed-bg: #3D2624;
+  --missed-border: #8E4A44;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  
-  --color-dark-bg-primary: var(--dark-bg-primary);
-  --color-dark-bg-secondary: var(--dark-bg-secondary);
-  --color-dark-bg-card: var(--dark-bg-card);
-  --color-dark-bg-elevated: var(--dark-bg-elevated);
-  
-  --color-dark-text-primary: var(--dark-text-primary);
-  --color-dark-text-secondary: var(--dark-text-secondary);
-  --color-dark-text-muted: var(--dark-text-muted);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-fg: var(--primary-fg);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-text: var(--primary-text);
+  --color-focus: var(--focus);
+  --color-danger: var(--danger);
+  --color-danger-hover: var(--danger-hover);
+  --color-taken-fg: var(--taken-fg);
+  --color-taken-bg: var(--taken-bg);
+  --color-taken-border: var(--taken-border);
+  --color-pending-fg: var(--pending-fg);
+  --color-pending-bg: var(--pending-bg);
+  --color-pending-border: var(--pending-border);
+  --color-missed-fg: var(--missed-fg);
+  --color-missed-bg: var(--missed-bg);
+  --color-missed-border: var(--missed-border);
+
+  --font-sans: var(--font-noto-sans);
+  --font-heading: var(--font-figtree);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+@layer base {
+  /* 18px base that still respects the user's browser font size */
+  html {
+    font-size: 112.5%;
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans), system-ui, sans-serif;
+    line-height: 1.5;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading), var(--font-sans), sans-serif;
+    line-height: 1.25;
+  }
+
+  input,
+  select,
+  textarea {
+    color: inherit;
+  }
+
+  ::placeholder {
+    color: var(--fg-muted);
+    opacity: 1;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* skip-link target: focus moves here, but outlining the whole page is noise */
+  #main-content:focus {
+    outline: none;
+  }
 }
 
-/* Base style overrides for inputs in dark mode */
-.dark input, 
-.dark select, 
-.dark textarea {
-  background-color: var(--dark-bg-secondary) !important;
-  color: var(--dark-text-primary) !important;
-  border-color: #334155 !important;
-}
-
-.dark input::placeholder, 
-.dark textarea::placeholder {
-  color: var(--dark-text-muted) !important;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
