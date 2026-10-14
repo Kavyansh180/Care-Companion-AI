@@ -22,6 +22,7 @@ import Dialog from "@/components/ui/Dialog";
 import EmptyState from "@/components/ui/EmptyState";
 import Loading from "@/components/ui/Loading";
 import StatusBadge from "@/components/ui/StatusBadge";
+import CohortRiskPanel, { COHORT_RISK_HEADING_ID } from "@/components/caregiver/CohortRiskPanel";
 
 interface TimelineEvent {
   id: string;
@@ -406,6 +407,10 @@ export default function CaregiverDashboard() {
                 })}
               </ul>
             )}
+          </section>
+
+          <section aria-labelledby={COHORT_RISK_HEADING_ID} className={cardClass}>
+            <CohortRiskPanel />
           </section>
         </div>
 

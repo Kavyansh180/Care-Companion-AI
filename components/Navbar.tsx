@@ -13,6 +13,7 @@ const navItems = [
   { name: "Scan prescription", href: "/upload" },
   { name: "Add medicine", href: "/add-medicine" },
   { name: "Patients", href: "/patients" },
+  { name: "Analytics", href: "/analytics" },
 ];
 
 export default function Navbar() {
