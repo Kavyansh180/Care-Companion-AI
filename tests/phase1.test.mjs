@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { summarizeDoses, adherenceRate } from '../lib/adherence.ts';
+import { formatTime12h } from '../lib/format.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -105,35 +107,21 @@ describe('CareCompanion AI — Phase-1 Review 2 Test Suite', () => {
         { id: '3', medicineName: 'Amlodipine 5mg', exactTime: '21:00', status: 'pending' },
       ];
 
-      const total = mockDoses.length;
-      const taken = mockDoses.filter(d => d.status === 'taken').length;
-      const missed = mockDoses.filter(d => d.status === 'missed').length;
-      const pending = mockDoses.filter(d => d.status === 'pending').length;
+      const summary = summarizeDoses(mockDoses);
+      assert.equal(summary.total, 3);
+      assert.equal(summary.taken, 1);
+      assert.equal(summary.missed, 1);
+      assert.equal(summary.pending, 1);
 
-      assert.equal(total, 3);
-      assert.equal(taken, 1);
-      assert.equal(missed, 1);
-      assert.equal(pending, 1);
-
-      const adherenceRate = Math.round((taken / total) * 100);
-      assert.equal(adherenceRate, 33);
+      // pending doses are excluded: 1 taken / (1 taken + 1 missed)
+      assert.equal(adherenceRate(summary), 50);
     });
 
     test('validates 12-hour time formatter across all time slots', () => {
-      const formatTime12h = (time24) => {
-        if (!time24 || time24 === "00:00") return "00:00";
-        const [hourStr, minStr] = time24.split(":");
-        const hour = parseInt(hourStr);
-        if (isNaN(hour)) return time24;
-        const ampm = hour >= 12 ? "PM" : "AM";
-        const hour12 = hour % 12 === 0 ? 12 : hour % 12;
-        return `${hour12}:${minStr || "00"} ${ampm}`;
-      };
-
       assert.equal(formatTime12h('08:00'), '8:00 AM');
       assert.equal(formatTime12h('13:00'), '1:00 PM');
       assert.equal(formatTime12h('21:00'), '9:00 PM');
-      assert.equal(formatTime12h('00:00'), '00:00');
+      assert.equal(formatTime12h('00:00'), '12:00 AM');
     });
   });
 

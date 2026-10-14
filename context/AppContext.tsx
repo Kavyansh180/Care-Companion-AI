@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { localDateString } from "@/lib/dates";
 
 /**
  * Phase-1 Review 2 Core Models (UI Prototype Layer)
@@ -318,16 +319,16 @@ const defaultLogs: TrackingLog[] = [
   {
     id: "log-1",
     patientId: "profile-ramesh",
-    date: new Date().toISOString().split("T")[0],
+    date: localDateString(),
     medicineId: "med-1",
     timeSlot: "morning",
     status: "taken",
-    timestamp: `${new Date().toISOString().split("T")[0]} 08:15`,
+    timestamp: `${localDateString()} 08:15`,
   },
   {
     id: "log-2",
     patientId: "profile-ramesh",
-    date: new Date().toISOString().split("T")[0],
+    date: localDateString(),
     medicineId: "med-2",
     timeSlot: "night",
     status: "pending",
@@ -335,7 +336,7 @@ const defaultLogs: TrackingLog[] = [
   {
     id: "log-3",
     patientId: "profile-ramesh",
-    date: new Date().toISOString().split("T")[0],
+    date: localDateString(),
     medicineId: "med-3",
     timeSlot: "afternoon",
     status: "missed",
@@ -343,16 +344,16 @@ const defaultLogs: TrackingLog[] = [
   {
     id: "log-4",
     patientId: "profile-kamla",
-    date: new Date().toISOString().split("T")[0],
+    date: localDateString(),
     medicineId: "med-4",
     timeSlot: "morning",
     status: "taken",
-    timestamp: `${new Date().toISOString().split("T")[0]} 07:45`,
+    timestamp: `${localDateString()} 07:45`,
   },
   {
     id: "log-5",
     patientId: "profile-kamla",
-    date: new Date().toISOString().split("T")[0],
+    date: localDateString(),
     medicineId: "med-5",
     timeSlot: "night",
     status: "pending",
@@ -363,14 +364,14 @@ const defaultSymptomLogs: SymptomLog[] = [
   {
     id: "sym-1",
     patientId: "profile-ramesh",
-    date: new Date().toISOString().split("T")[0],
+    date: localDateString(),
     severity: "mild",
     notes: "Slight tiredness in the afternoon. Blood pressure normal at 128/82.",
   },
   {
     id: "sym-2",
     patientId: "profile-kamla",
-    date: new Date().toISOString().split("T")[0],
+    date: localDateString(),
     severity: "mild",
     notes: "Post-lunch blood sugar normal.",
   }
@@ -527,7 +528,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
     setAllMedicines((prev) => [...prev, newMed]);
 
-    const todayStr = new Date().toISOString().split("T")[0];
+    const todayStr = localDateString();
     const newLogs: TrackingLog[] = newMed.reminderTimes.map((rt) => ({
       id: generateUniqueId("log"),
       patientId: activeProfileId,
@@ -549,7 +550,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
     const addedMeds: Medicine[] = [];
     const addedLogs: TrackingLog[] = [];
-    const todayStr = new Date().toISOString().split("T")[0];
+    const todayStr = localDateString();
     const generatedIds = new Set<string>();
 
     newMedsInput.forEach((medicine) => {
