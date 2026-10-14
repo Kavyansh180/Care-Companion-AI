@@ -6,6 +6,7 @@ const links = [
   { name: "Caregiver", href: "/caregiver" },
   { name: "Scan prescription", href: "/upload" },
   { name: "Patients", href: "/patients" },
+  { name: "Analytics", href: "/analytics" },
 ];
 
 export default function Footer() {

@@ -13,7 +13,7 @@ const features = [
   {
     Icon: BellRing,
     title: "Reminders in their language",
-    text: "A chime and a spoken reminder in 10 languages, with a large “I have taken it” button.",
+    text: "A spoken reminder in 10 languages, with a large “I have taken it” button.",
   },
   {
     Icon: Users,
@@ -30,7 +30,7 @@ const doseStatuses: { status: DoseStatus; text: string }[] = [
 
 const steps = [
   { title: "Add medicines", text: "Scan a prescription or type the medicines in." },
-  { title: "Get reminded at each dose time", text: "The patient hears a chime and a spoken reminder." },
+  { title: "Get reminded at each dose time", text: "The patient sees a reminder and hears it spoken aloud." },
   { title: "Family checks the caregiver view", text: "See what was taken, what is pending and what was missed." },
 ];
 
@@ -66,8 +66,8 @@ export default function Home() {
           Medicines on time, with family kept in the loop
         </h1>
         <p className="text-lg text-fg-muted">
-          CareCompanion reads a photo of a prescription and builds a daily schedule. It reminds the patient with a
-          chime and a spoken message in their language, and shows family caregivers what was taken.
+          CareCompanion reads a photo of a prescription and builds a daily schedule. It reminds the patient with an
+          on-screen and spoken message in their language, and shows family caregivers what was taken.
         </p>
         <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:flex-wrap sm:items-center">
           <Link href="/dashboard" className={buttonClass("primary", "lg")}>

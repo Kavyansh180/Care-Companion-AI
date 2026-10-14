@@ -46,12 +46,12 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-surface print:hidden">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-2 px-4 sm:gap-3 sm:px-6 lg:px-8">
         <Link href="/" className="flex shrink-0 items-center gap-2.5 rounded-lg">
-          <span className="flex size-10 items-center justify-center rounded-lg bg-primary-soft text-primary-text">
+          <span className="flex size-9 items-center sm:size-10 justify-center rounded-lg bg-primary-soft text-primary-text">
             <HeartPulse aria-hidden="true" className="size-6" />
           </span>
-          <span className="text-lg font-bold text-fg">CareCompanion AI</span>
+          <span className="text-base font-bold text-fg sm:text-lg">CareCompanion AI</span>
         </Link>
 
         {/* 18px base type: five links only fit on one row from xl (1280px) up; below that the menu button is used. */}
@@ -78,7 +78,7 @@ export default function Navbar() {
           </ul>
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2">
           {mounted && (
             <Link
               href="/patients"
