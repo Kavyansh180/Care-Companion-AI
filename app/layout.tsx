@@ -39,8 +39,9 @@ export default function RootLayout({
             __html: `
               (function() {
                 try {
+                  // Light by default; dark only when the user picked it with the toggle (not from the OS setting).
                   var storedTheme = localStorage.getItem('cc_theme');
-                  if (storedTheme === 'dark' || (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                  if (storedTheme === 'dark') {
                     document.documentElement.classList.add('dark');
                   } else {
                     document.documentElement.classList.remove('dark');

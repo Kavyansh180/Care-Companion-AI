@@ -25,7 +25,7 @@ export function iconButtonClass(): string {
   return "inline-flex size-11 items-center justify-center rounded-lg text-fg-muted hover:bg-surface-muted hover:text-fg transition-colors cursor-pointer";
 }
 
-export const cardClass = "rounded-xl border border-border bg-surface p-5 sm:p-6";
+export const cardClass = "rounded-xl border border-border bg-surface p-5 shadow-xs sm:p-6";
 export const inputClass =
   "block w-full rounded-lg border border-border-strong bg-surface px-3 py-2.5 text-base text-fg";
 export const labelClass = "block text-base font-semibold text-fg";

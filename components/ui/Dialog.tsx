@@ -48,7 +48,7 @@ export default function Dialog({
         if (onClose) onClose();
         else ref.current?.showModal();
       }}
-      className={`m-auto w-[calc(100%-2rem)] max-w-lg rounded-2xl border border-border bg-surface p-0 text-fg shadow-xl backdrop:bg-slate-950/60 ${className}`}
+      className={`m-auto w-[calc(100%-2rem)] max-w-lg rounded-2xl border border-border bg-surface p-0 text-fg shadow-lg backdrop:bg-[#24332F]/45 ${className}`}
     >
       <div className="p-6">
         <div className="flex items-start justify-between gap-4">
