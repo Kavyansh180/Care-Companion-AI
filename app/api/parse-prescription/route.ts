@@ -44,52 +44,71 @@ Return ONLY a valid JSON object (no markdown code blocks, no backticks, no expla
 Note: timeOfDay must only contain one or more of: "morning", "afternoon", "evening", "night".
 If exactTime is not explicitly stated, infer standard schedule times (08:00 for morning, 13:00 for afternoon, 18:00 for evening, 21:00 for night).`;
 
-    const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-goog-api-key": apiKey,
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              role: "user",
-              parts: [
-                {
-                  inline_data: {
-                    mime_type: mediaType || "image/jpeg",
-                    data: imageBase64,
-                  },
-                },
-                { text: prompt },
-              ],
+    const CANDIDATE_MODELS = [
+      "gemini-3.7-flash",
+      "gemini-3.6-flash",
+      "gemini-3.8-flash",
+      "gemini-flash-latest",
+      "gemini-3-flash-preview",
+    ];
+
+    let textOutput: string | undefined;
+    let lastError: string = "AI prescription processing failed";
+
+    for (const model of CANDIDATE_MODELS) {
+      try {
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-goog-api-key": apiKey,
             },
-          ],
-          generationConfig: {
-            response_mime_type: "application/json",
-            temperature: 0.1,
-          },
-        }),
+            body: JSON.stringify({
+              contents: [
+                {
+                  role: "user",
+                  parts: [
+                    {
+                      inline_data: {
+                        mime_type: mediaType || "image/jpeg",
+                        data: imageBase64,
+                      },
+                    },
+                    { text: prompt },
+                  ],
+                },
+              ],
+              generationConfig: {
+                response_mime_type: "application/json",
+                temperature: 0.1,
+              },
+            }),
+          }
+        );
+
+        const data = await response.json();
+
+        if (response.ok && data?.candidates?.[0]?.content?.parts?.[0]?.text) {
+          textOutput = data.candidates[0].content.parts[0].text;
+          console.log(`Successfully parsed prescription using Gemini model: ${model}`);
+          break;
+        } else {
+          const errMsg = data?.error?.message || `HTTP ${response.status}`;
+          lastError = errMsg;
+          console.warn(`Model ${model} returned error: ${errMsg}. Attempting fallback model...`);
+        }
+      } catch (reqErr: any) {
+        lastError = reqErr.message || "Network error";
+        console.warn(`Model ${model} request failed: ${lastError}. Attempting fallback model...`);
       }
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error("Gemini API Error:", JSON.stringify(data));
-      return NextResponse.json(
-        { error: data?.error?.message || "AI prescription processing failed" },
-        { status: 500 }
-      );
     }
 
-    const textOutput = data?.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!textOutput) {
-      console.error("Gemini: Empty text in response", JSON.stringify(data));
+      console.error("All Gemini candidate models failed. Last error:", lastError);
       return NextResponse.json(
-        { error: "No response received from Gemini Vision AI" },
+        { error: lastError },
         { status: 500 }
       );
     }

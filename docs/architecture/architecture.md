@@ -62,7 +62,7 @@ CareCompanion AI implements a modern multi-tier, serverless architecture tailore
   - Parses, sanitizes, and normalizes AI output before sending responses to the client
 
 ### 2.3 AI Vision Engine
-- **Model**: Google Gemini 2.5 Flash Vision (`gemini-2.5-flash`)
+- **Model**: Google Gemini 3.8 Flash Vision (`gemini-3.8-flash`)
 - **Role**:
   - Multimodal Optical Character Recognition (OCR) and clinical entity recognition
   - Reads doctor handwriting, medicine abbreviations (`QD`, `BID`, `TID`, `hs`, `ac`), dosages (`mg`, `mcg`), and timings (`Morning`, `Night`)
