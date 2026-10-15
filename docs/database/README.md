@@ -96,7 +96,7 @@ Maintains discrete time-stamped intake event logs to compute adherence metrics a
 ## 4. Why This Structure Supports Medication Adherence
 
 1. **Granular Temporal Tracking**: By modeling `exact_time` and `time_of_day` separately in `MedicationSchedule`, the system can group medications into intuitive daily routines for elderly users while maintaining second-level precision for scheduling triggers.
-2. **Three-State Adherence Calculation**: The `CHECK (status IN ('taken', 'pending', 'missed'))` constraint on `AdherenceLog` ensures strict state integrity for computing compliance percentages (`taken / (taken + missed + pending)`).
+2. **Three-State Adherence Calculation**: The `CHECK (status IN ('taken', 'pending', 'missed'))` constraint on `AdherenceLog` ensures strict state integrity for computing compliance percentages. The app uses `taken / (taken + missed)` and leaves pending doses out until they are decided.
 3. **Prescription PoC Interoperability**: The fields directly match the output emitted by the Gemini Vision extraction PoC (`patient`, `name`, `dosage`, `timing`, `duration_days`), allowing seamless mapping from optical recognition to database records.
 
 ---
@@ -104,3 +104,21 @@ Maintains discrete time-stamped intake event logs to compute adherence metrics a
 ## 5. Phase-1 Boundary Clarification
 
 > **Important**: This database schema represents the finalized structural model for Phase 1. An actual relational database (PostgreSQL/MySQL) will be provisioned in Phase 2. The active Phase-1 application uses a synchronized in-memory/browser-state representation mirroring these exact schemas for deterministic academic review.
+
+---
+
+## 6. Migrations
+
+| File | Status | What it contains |
+|---|---|---|
+| [`schema.sql`](schema.sql) | Phase-1 base design | `PatientProfile`, `MedicationSchedule`, `AdherenceLog`, indexes and the Review 2 seed data for Mr. Ramesh |
+| [`migrations/002_adherence_intelligence.sql`](migrations/002_adherence_intelligence.sql) | **Design only, not applied anywhere** | Extends the base schema for the adherence-intelligence prototype (see below) |
+
+**What `002_adherence_intelligence.sql` adds**
+
+1. New `AdherenceLog` columns: `reminder_sent`, `reminder_acknowledged`, `taken_at`, `delay_minutes`. Two checks keep them consistent: a reminder cannot be acknowledged unless it was sent, and `taken_at` and `delay_minutes` can only be set when the status is `taken`. It also adds an index on `(patient_id, log_date)`.
+2. `AppActivityEvent`: one row per app open, dashboard view or reminder response. Activity is not evidence that a dose was taken.
+3. `ModelVersion`: one row per trained model (algorithm, training date, training-data hash, metrics as JSON, and a flag saying whether the training data was synthetic).
+4. `RiskPrediction`: the estimated probability that a patient's next dose is missed, the model version that made it, the time of the estimate, the dose time it refers to, the risk band and the per-prediction factors. The risk bands are prototype thresholds, not medically validated.
+
+**Where the data really lives today.** The running prototype keeps live data in browser `localStorage` (the browser field names are camelCase, for example `exactTime`, and only approximate these tables). The simulated analytics data is read from `ml/data/*.csv`. No code reads or runs either SQL file, and the app has no database driver.
